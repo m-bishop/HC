@@ -45,7 +45,7 @@ public class MessageView {
         stage = new Stage(viewport, sb);
 
         background = new Image(new Sprite((Asset.manager.get(Asset.mainBG,Texture.class))));
-        buttonAtlas = Asset.manager.get(Asset.buttonAtlas,TextureAtlas.class);
+        buttonAtlas = Asset.manager.get(Asset.spritePack,TextureAtlas.class);
         uiSkin = new Skin();
         uiSkin.addRegions(buttonAtlas);
 

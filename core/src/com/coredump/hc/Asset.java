@@ -13,7 +13,8 @@ public class Asset {
 
     public static final AssetManager manager = new AssetManager();
     public static final String mainBG = "Main.png";
-    public static final String buttonAtlas = "buttons.atlas";
+    public static final String spritePack = "HC.pack";
+    //public static final String buttonAtlas = "buttons.atlas";
 
 
     public HCGame game;
@@ -26,7 +27,8 @@ public class Asset {
     public void load(){
 
         manager.load(mainBG,Texture.class);
-        manager.load(buttonAtlas,TextureAtlas.class);
+        //manager.load(buttonAtlas,TextureAtlas.class);
+        manager.load(spritePack,TextureAtlas.class);
 
     }
 
