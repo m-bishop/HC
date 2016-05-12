@@ -95,7 +95,7 @@ public class Fail {
         CautionActor cautionTop = new CautionActor(connectionLabel.getY()+(connectionLabel.getHeight()*fontScale),100,true);
         CautionActor cautionBottom = new CautionActor(connectionLabel.getY()-(connectionLabel.getHeight()*fontScale),100,false);
 
-        //TODO Fix this janky ass misuse of the window frame with a black sprite.
+
         Image msgWindow = new Image(uiSkin.getDrawable("blackbox"));
         msgWindow.setX(0);
         msgWindow.setY(150);

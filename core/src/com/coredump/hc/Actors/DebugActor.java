@@ -23,7 +23,7 @@ import com.coredump.hc.HCGame;
 
     public class DebugActor extends Actor {
 
-    private Array<Label> labelArray = new Array<Label>(33);
+    private Array<Label> labelArray = new Array<Label>(HCGame.DEBUG_LINES);
     private Table debugTable;
     private HCGame game;
 
@@ -40,19 +40,19 @@ import com.coredump.hc.HCGame;
 
         debugTable = new Table();
         debugTable.setBackground(sd2);
-        debugTable.setHeight(HCGame.V_HEIGHT);
+        debugTable.setHeight(HCGame.V_HEIGHT-64); // 64 = button height
         debugTable.setWidth(HCGame.V_WIDTH);
         debugTable.setX(0);
-        debugTable.setY(0);
+        debugTable.setY(64); // 64 = button height
 
 
     Array<String> debug = game.getDebug();
-    for (int i = 0; i < 33; i++) {
+    for (int i = 0; i <= HCGame.DEBUG_LINES; i++) {
         Label label = new Label((debug.get(i)), new Label.LabelStyle(new BitmapFont(), Color.GREEN));
         labelArray.add(label);
         label.setFontScale(.75f);
         label.setAlignment(Align.left);
-        debugTable.add(label).align(Align.left).expandX();
+        debugTable.add(label).align(Align.topLeft).expandX();
         debugTable.row();
     }
 
@@ -60,7 +60,7 @@ import com.coredump.hc.HCGame;
         @Override
         public void draw(Batch batch, float alpha){
 
-            for (int i = 0; i < 33; i++) {
+            for (int i = 0; i <= HCGame.DEBUG_LINES; i++) {
                 labelArray.get(i).setText(game.getDebug().get(i));
             }
             debugTable.draw(batch,alpha);

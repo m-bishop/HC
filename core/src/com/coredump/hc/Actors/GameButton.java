@@ -7,7 +7,7 @@ import com.coredump.hc.HCGame;
 /**
  * Created by Gregory on 3/12/2016.
  */
-
+//TODO get rid of this useless class after creating a gameBoard singleton to contain central game board information
 
     public class GameButton extends Button {
 

@@ -171,8 +171,15 @@ public class MainMenu {
         listTable.row();
         listTable.add(new Button(uiSkin.getDrawable("Skull_UP"), uiSkin.getDrawable("Skull_DN")));
 
+        Image buttonBack = new Image(uiSkin.getDrawable("blackbox"));
+        buttonBack.setX(0);
+        buttonBack.setY(0);
+        buttonBack.setHeight(64);
+        buttonBack.setWidth(HCGame.V_WIDTH);
+
         stage.addActor(clockBorder);
         stage.addActor(timeLabel);
+        stage.addActor(buttonBack);
         stage.addActor(buttonTable);
         stage.addActor(msgWindow);
         stage.addActor(container);

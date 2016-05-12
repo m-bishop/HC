@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.coredump.hc.Actors.GameButton;
@@ -39,23 +40,27 @@ public class GamePlayField {
         TextureAtlas buttonAtlas = Asset.manager.get(Asset.spritePack,TextureAtlas.class);
         Skin uiSkin = new Skin();
         uiSkin.addRegions(buttonAtlas);
-        AnimatedDrawable bDraw = new AnimatedDrawable(new Animation(1f,buttonAtlas.findRegions("SYS_B")));
-        AnimatedDrawable rDraw = new AnimatedDrawable(new Animation(1f,buttonAtlas.findRegions("SYS_R")));
-        GameButton testButton = new GameButton(bDraw,rDraw,game);
-        testButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-               // ((GameButton) event.getTarget()).clicked();
-                System.out.println("touched test button");
-            }
-        });
 
-        NodeActor node = new NodeActor(uiSkin.getDrawable("Hack_UP"),uiSkin.getDrawable("Hack_DN"),new Animation(1f,buttonAtlas.findRegions("SYS_G")),game);
-        node.setX(150f);
-        node.setY(100f);
 
-        stage.addActor(node);
-        stage.addActor(testButton);
+        NodeActor node0 = new NodeActor(new AnimatedDrawable(new Animation(1f,buttonAtlas.findRegions("SYS_G"))),new AnimatedDrawable(new Animation(1f,buttonAtlas.findRegions("SYS_D"))),game);
+        node0.setX(150f);
+        node0.setY(100f);
+
+        NodeActor node1 = new NodeActor(new AnimatedDrawable(new Animation(1f,buttonAtlas.findRegions("SYS_G"))),new AnimatedDrawable(new Animation(1f,buttonAtlas.findRegions("SYS_D"))),game);
+        node1.setX(150f);
+        node1.setY(184f);
+
+        NodeActor node2 = new NodeActor(new AnimatedDrawable(new Animation(1f,buttonAtlas.findRegions("SYS_G"))),new AnimatedDrawable(new Animation(1f,buttonAtlas.findRegions("SYS_D"))),game);
+        node2.setX(200f);
+        node2.setY(268f);
+
+        node0.setChildren(new Array<NodeActor>(new NodeActor[]{node1}));
+        node1.setChildren(new Array<NodeActor>(new NodeActor[]{node1,node2}));
+        node2.setChildren(new Array<NodeActor>(new NodeActor[]{node1}));
+
+        stage.addActor(node0);
+        stage.addActor(node1);
+        stage.addActor(node2);
 
     }
 

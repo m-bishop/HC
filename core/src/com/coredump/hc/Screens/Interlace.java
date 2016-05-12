@@ -43,14 +43,11 @@ public class Interlace {
         uiSkin.addRegions(buttonAtlas);
         Image main = new Image(uiSkin.getDrawable("Main"));
 
-
-
         stage.addActor(artifact);
         stage.addActor(artifact2);
         stage.addActor(debugTable);
         stage.addActor(scanLine);
         stage.addActor(main);
-
 
         Gdx.input.setInputProcessor(stage);
 

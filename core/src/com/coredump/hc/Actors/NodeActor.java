@@ -1,11 +1,14 @@
 package com.coredump.hc.Actors;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.utils.Array;
 import com.coredump.hc.Actions.Action;
 import com.coredump.hc.Actions.NoAction;
 import com.coredump.hc.HCGame;
@@ -16,16 +19,18 @@ import com.coredump.hc.HCGame;
 
 
     public class NodeActor extends GameButton {
-        private Animation animation;
+
         private TextureRegion keyFrame;
         private float stateTime = 0;
         private Action currentAction;
         private HCGame game;
+        private Array<NodeActor> childNodes = new Array<NodeActor>();
+        private ShapeRenderer renderer = new ShapeRenderer();
 
-        public NodeActor(Drawable up,Drawable down,Animation animation, HCGame game){
+        public NodeActor(Drawable up,Drawable down, HCGame game){
             super(up,down,game);
             this.game = game;
-            this.animation = animation;
+
             this.currentAction = new NoAction();
 
             addListener(new ClickListener() {
@@ -51,14 +56,36 @@ import com.coredump.hc.HCGame;
 
         @Override
         public void draw(Batch batch, float alpha){
-            keyFrame = animation.getKeyFrame(stateTime,true);
-            batch.draw(keyFrame, this.getX(), this.getY(), keyFrame.getRegionWidth(), keyFrame.getRegionHeight());
+            //keyFrame = animation.getKeyFrame(stateTime,true);
+            //batch.draw(keyFrame, this.getX(), this.getY(), keyFrame.getRegionWidth(), keyFrame.getRegionHeight());
+            // draw lines from me to my children
+            super.draw(batch,alpha);
+            batch.end();
+
+            renderer.setProjectionMatrix(batch.getProjectionMatrix());
+            renderer.setTransformMatrix(batch.getTransformMatrix());
+
+            renderer.begin(ShapeRenderer.ShapeType.Filled);
+
+            renderer.setColor(Color.GREEN);    // Set Color before drawing
+            //renderer.rectLine(getX()+getWidth()/2,getY()+getHeight()/2,0,0,1);
+            for (NodeActor node : childNodes){
+                renderer.rectLine(getX()+getWidth()/2,getY()+getHeight()/2,node.getX()+getWidth()/2,node.getY()+getHeight()/2,1);
+            }
+            renderer.end();
+
+            batch.begin();
+
 
         }
 
         public void clicked(){
             getGame().addDebug(">node Pressed:");
             currentAction = game.getCurrentAction();
+        }
+
+        public void setChildren(Array<NodeActor> childNodes) {
+            this.childNodes = childNodes;
         }
     }
 
