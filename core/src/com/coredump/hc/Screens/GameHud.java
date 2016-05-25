@@ -1,23 +1,28 @@
 package com.coredump.hc.Screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.coredump.hc.Actions.Action;
+import com.coredump.hc.Actions.ScanAction;
 import com.coredump.hc.Actors.GameButton;
 import com.coredump.hc.Actors.NodeActor;
 import com.coredump.hc.Asset;
@@ -86,14 +91,17 @@ public class GameHud {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 ((GameButton) event.getTarget()).getGame().addDebug(">Scan Button Pressed:");
+                /*
                 Action scanAction = new Action(){
                     @Override
                     public void act(HCGame game,NodeActor node){
+                        node.enableChildren();
                         game.addDebug("Scan Processed");
                         complete = true;
                     }
                 };
-                ((GameButton) event.getTarget()).getGame().setCurrentAction(scanAction);
+                */
+                ((GameButton) event.getTarget()).getGame().setCurrentAction(new ScanAction());
             }
         });
 
@@ -147,7 +155,15 @@ public class GameHud {
         //stage.addActor(pickButton);
         //stage.addActor(extinguishButton);
         //stage.addActor(scanButton);
+
+        Label timeLabel = new Label("00:00:00", new Label.LabelStyle(new BitmapFont(), Color.RED));
+        timeLabel.setFontScale(2.5f);
+        timeLabel.setAlignment(Align.center);
+        timeLabel.setX((HCGame.V_WIDTH / 2) - timeLabel.getWidth() / 2);
+        timeLabel.setY(HCGame.V_HEIGHT - timeLabel.getHeight()-5);
+
         stage.addActor(container);
+        stage.addActor(timeLabel);
         stage.addActor(exitButton);
 
         Gdx.input.setInputProcessor(stage);

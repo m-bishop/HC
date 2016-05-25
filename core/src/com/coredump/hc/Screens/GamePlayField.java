@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Tree;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -27,6 +28,8 @@ public class GamePlayField {
     private Viewport viewport;
     public CameraController camControl;
     private HCGame game;
+    private Array<NodeActor> nodes = new Array<NodeActor>();
+
 
     public GamePlayField(SpriteBatch sb, HCGame game) {
 
@@ -45,14 +48,18 @@ public class GamePlayField {
         NodeActor node0 = new NodeActor(new AnimatedDrawable(new Animation(1f,buttonAtlas.findRegions("SYS_G"))),new AnimatedDrawable(new Animation(1f,buttonAtlas.findRegions("SYS_D"))),game);
         node0.setX(150f);
         node0.setY(100f);
+        node0.setEnabled(true);
+        nodes.add(node0);
 
         NodeActor node1 = new NodeActor(new AnimatedDrawable(new Animation(1f,buttonAtlas.findRegions("SYS_G"))),new AnimatedDrawable(new Animation(1f,buttonAtlas.findRegions("SYS_D"))),game);
         node1.setX(150f);
         node1.setY(184f);
+        nodes.add(node1);
 
         NodeActor node2 = new NodeActor(new AnimatedDrawable(new Animation(1f,buttonAtlas.findRegions("SYS_G"))),new AnimatedDrawable(new Animation(1f,buttonAtlas.findRegions("SYS_D"))),game);
         node2.setX(200f);
         node2.setY(268f);
+        nodes.add(node2);
 
         node0.setChildren(new Array<NodeActor>(new NodeActor[]{node1}));
         node1.setChildren(new Array<NodeActor>(new NodeActor[]{node1,node2}));
@@ -65,8 +72,15 @@ public class GamePlayField {
     }
 
     public void update(){
-        stage.draw();
+        viewport.getCamera().update();
+        stage.getBatch().setProjectionMatrix(viewport.getCamera().combined);
         stage.act();
+
+        for (NodeActor node : nodes) {
+            node.drawNetwork(stage.getBatch());
+        }
+        stage.draw();
+
         camControl.update();
     }
 

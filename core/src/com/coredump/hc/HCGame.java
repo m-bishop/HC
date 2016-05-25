@@ -147,8 +147,8 @@ public class HCGame extends Game {
 
                 Gdx.input.setInputProcessor(inputMultiplexer);
                 playField.update();
-                playField.stage.act();
-                playField.stage.draw();
+                //playField.stage.act();
+                //playField.stage.draw();
                 gameHud.stage.act();
                 gameHud.stage.draw();
                 break;
