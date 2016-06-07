@@ -65,6 +65,8 @@ public class GamePlayField {
         node1.setChildren(new Array<NodeActor>(new NodeActor[]{node1,node2}));
         node2.setChildren(new Array<NodeActor>(new NodeActor[]{node1}));
 
+        this.game.startRound(30);
+
         stage.addActor(node0);
         stage.addActor(node1);
         stage.addActor(node2);

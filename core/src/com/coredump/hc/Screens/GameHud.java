@@ -25,6 +25,7 @@ import com.coredump.hc.Actions.Action;
 import com.coredump.hc.Actions.ScanAction;
 import com.coredump.hc.Actors.GameButton;
 import com.coredump.hc.Actors.NodeActor;
+import com.coredump.hc.Actors.ScanButton;
 import com.coredump.hc.Asset;
 import com.coredump.hc.HCGame;
 
@@ -37,6 +38,7 @@ public class GameHud {
 
     public Stage stage;
     private Viewport viewport;
+    private Label timeLabel;
 
     public GameHud(SpriteBatch sb,HCGame game) {
 
@@ -84,6 +86,7 @@ public class GameHud {
         exitButton.setX(HCGame.V_WIDTH - exitButton.getWidth());
         exitButton.setY(HCGame.V_HEIGHT - exitButton.getHeight());
 
+        /*
         Button scanButton = new GameButton(uiSkin.getDrawable("Scan_R"),uiSkin.getDrawable("Scan_D"),game);
         //scanButton.setX(10f);
         //scanButton.setY(10f);
@@ -91,19 +94,12 @@ public class GameHud {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 ((GameButton) event.getTarget()).getGame().addDebug(">Scan Button Pressed:");
-                /*
-                Action scanAction = new Action(){
-                    @Override
-                    public void act(HCGame game,NodeActor node){
-                        node.enableChildren();
-                        game.addDebug("Scan Processed");
-                        complete = true;
-                    }
-                };
-                */
                 ((GameButton) event.getTarget()).getGame().setCurrentAction(new ScanAction());
             }
         });
+        */
+
+        ScanButton scanButton = new ScanButton(game);
 
         Button extinguishButton = new GameButton(uiSkin.getDrawable("Extinguish_R"),uiSkin.getDrawable("Extinguish_D"),game);
         //extinguishButton.setX(85f);
@@ -156,7 +152,7 @@ public class GameHud {
         //stage.addActor(extinguishButton);
         //stage.addActor(scanButton);
 
-        Label timeLabel = new Label("00:00:00", new Label.LabelStyle(new BitmapFont(), Color.RED));
+        timeLabel = new Label("00:00:00", new Label.LabelStyle(new BitmapFont(), Color.RED));
         timeLabel.setFontScale(2.5f);
         timeLabel.setAlignment(Align.center);
         timeLabel.setX((HCGame.V_WIDTH / 2) - timeLabel.getWidth() / 2);
@@ -168,6 +164,10 @@ public class GameHud {
 
         Gdx.input.setInputProcessor(stage);
 
+    }
+
+    public Label getTimeLabel() {
+        return timeLabel;
     }
 
 }

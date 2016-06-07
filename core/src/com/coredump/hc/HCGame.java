@@ -5,7 +5,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.coredump.hc.Actions.Action;
 import com.coredump.hc.Actions.NoAction;
@@ -34,10 +36,11 @@ public class HCGame extends Game {
     private GameState gameState;
     private float loadTimer;
     private SpriteBatch batch;
-
+    private Skin uiSkin;
 
     private SimpleDateFormat sd;
     private Array<String> debugArray;
+    private float roundTimer;
 
 
 
@@ -49,6 +52,7 @@ public class HCGame extends Game {
     private GamePlayField playField;
     private GameHud gameHud;
     private Fail fail;
+
 
     //input
     private GestureDetector gestureDetector ;
@@ -74,7 +78,7 @@ public class HCGame extends Game {
 
     @Override
     public void render () {
-        Gdx.gl.glClearColor(0, .1f, 0, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         if (interlace != null) {
@@ -103,6 +107,9 @@ public class HCGame extends Game {
                     loading.stage.dispose();
                     loading = null;
                     interlace = new Interlace(batch, this);
+                    TextureAtlas buttonAtlas = Asset.manager.get(Asset.spritePack,TextureAtlas.class);
+                    uiSkin = new Skin();
+                    uiSkin.addRegions(buttonAtlas);
                 }
 
                 break;
@@ -145,10 +152,11 @@ public class HCGame extends Game {
 
                 }
 
+                this.processRoundLogic();
+
                 Gdx.input.setInputProcessor(inputMultiplexer);
                 playField.update();
-                //playField.stage.act();
-                //playField.stage.draw();
+                gameHud.getTimeLabel().setText(String.format("%.2f", roundTimer));
                 gameHud.stage.act();
                 gameHud.stage.draw();
                 break;
@@ -210,6 +218,24 @@ public class HCGame extends Game {
         this.currentAction = new NoAction();
         return tempAction;
     }
+
+    public Skin getUiSkin() {
+        return uiSkin;
+    }
+
+    private void processRoundLogic(){
+        roundTimer -= Gdx.graphics.getDeltaTime();
+
+        if (roundTimer <= 0){
+            this.gameState = GameState.FAIL;
+        }
+    }
+
+    public void startRound(float period){
+        roundTimer = period;
+    }
+
+
 
     public void setCurrentAction(Action currentAction) {
         this.currentAction = currentAction;
