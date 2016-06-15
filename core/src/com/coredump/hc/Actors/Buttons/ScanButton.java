@@ -1,18 +1,14 @@
-package com.coredump.hc.Actors;
+package com.coredump.hc.Actors.Buttons;
 
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.coredump.hc.Actions.ScanAction;
-import com.coredump.hc.Asset;
 import com.coredump.hc.HCGame;
 
 /**
  * Created by Gregory on 6/6/2016.
  */
-public class ScanButton extends GameButton{
+public class ScanButton extends GameButton {
 
 
     public ScanButton(HCGame game){

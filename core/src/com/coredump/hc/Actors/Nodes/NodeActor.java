@@ -1,7 +1,6 @@
-package com.coredump.hc.Actors;
+package com.coredump.hc.Actors.Nodes;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -11,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Array;
 import com.coredump.hc.Actions.Action;
 import com.coredump.hc.Actions.NoAction;
+import com.coredump.hc.Actors.Buttons.GameButton;
 import com.coredump.hc.HCGame;
 
 /**

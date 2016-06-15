@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.coredump.hc.Actors.NodeActor;
+import com.coredump.hc.Actors.Nodes.NodeActor;
 import com.coredump.hc.Asset;
 import com.coredump.hc.HCGame;
 

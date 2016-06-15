@@ -1,6 +1,6 @@
 package com.coredump.hc.Actions;
 
-import com.coredump.hc.Actors.NodeActor;
+import com.coredump.hc.Actors.Nodes.NodeActor;
 import com.coredump.hc.HCGame;
 
 /**

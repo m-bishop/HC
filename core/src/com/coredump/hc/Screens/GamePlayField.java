@@ -4,16 +4,13 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Tree;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.coredump.hc.Actors.GameButton;
-import com.coredump.hc.Actors.NodeActor;
+import com.coredump.hc.Actors.Nodes.NodeActor;
+import com.coredump.hc.Actors.Nodes.SystemNode;
 import com.coredump.hc.AnimatedDrawable;
 import com.coredump.hc.Asset;
 import com.coredump.hc.CameraController;
@@ -44,8 +41,7 @@ public class GamePlayField {
         Skin uiSkin = new Skin();
         uiSkin.addRegions(buttonAtlas);
 
-
-        NodeActor node0 = new NodeActor(new AnimatedDrawable(new Animation(1f,buttonAtlas.findRegions("SYS_G"))),new AnimatedDrawable(new Animation(1f,buttonAtlas.findRegions("SYS_D"))),game);
+        SystemNode node0 = new SystemNode(game);
         node0.setX(150f);
         node0.setY(100f);
         node0.setEnabled(true);

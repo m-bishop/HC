@@ -21,11 +21,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.coredump.hc.Actions.Action;
-import com.coredump.hc.Actions.ScanAction;
-import com.coredump.hc.Actors.GameButton;
-import com.coredump.hc.Actors.NodeActor;
-import com.coredump.hc.Actors.ScanButton;
+import com.coredump.hc.Actors.Buttons.GameButton;
+import com.coredump.hc.Actors.Buttons.ScanButton;
 import com.coredump.hc.Asset;
 import com.coredump.hc.HCGame;
 

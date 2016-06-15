@@ -24,7 +24,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.coredump.hc.Actors.CautionActor;
-import com.coredump.hc.Actors.GameButton;
+import com.coredump.hc.Actors.Buttons.GameButton;
 import com.coredump.hc.Asset;
 import com.coredump.hc.HCGame;
 
