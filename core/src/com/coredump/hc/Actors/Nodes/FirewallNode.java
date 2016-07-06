@@ -12,8 +12,36 @@ import com.coredump.hc.HCGame;
 public class FirewallNode extends NodeActor {
 
     public FirewallNode(HCGame game){
-        super(new AnimatedDrawable(new Animation(1f, Asset.manager.get(Asset.spritePack,TextureAtlas.class).findRegions("FW_G"))),new AnimatedDrawable(new Animation(1f,Asset.manager.get(Asset.spritePack,TextureAtlas.class).findRegions("FW_D"))),game);
+        super(new AnimatedDrawable(new Animation(1f, Asset.manager.get(Asset.spritePack,TextureAtlas.class).findRegions("FW_R"))),new AnimatedDrawable(new Animation(1f,Asset.manager.get(Asset.spritePack,TextureAtlas.class).findRegions("FW_D"))),game);
 
+    }
+
+    @Override
+    public boolean processAttack(AttackType attackType) {
+        Boolean retVal = false;
+
+        switch (attackType){
+
+            case SCAN:
+                if (state == NodeState.GREEN) {
+                    this.enableChildren();
+                    retVal = true;
+                }
+            case EXTINGUISH:
+                if (state == NodeState.RED) {
+                    this.state = NodeState.GREEN;
+                    this.getStyle().up = new AnimatedDrawable(new Animation(1f, Asset.manager.get(Asset.spritePack, TextureAtlas.class).findRegions("FW_G")));
+                    this.setSize(getPrefWidth(), getPrefHeight());
+                    retVal = true;
+                }
+                break;
+            case ICEPICK:
+                break;
+            case SAVE:
+                break;
+        }
+
+        return retVal;
     }
 }
 

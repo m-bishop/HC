@@ -11,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.coredump.hc.Actions.Action;
 import com.coredump.hc.Actions.NoAction;
+import com.coredump.hc.Levels.Level;
+import com.coredump.hc.Levels.Level01;
 import com.coredump.hc.Screens.Fail;
 import com.coredump.hc.Screens.GameHud;
 import com.coredump.hc.Screens.GamePlayField;
@@ -37,6 +39,7 @@ public class HCGame extends Game {
     private float loadTimer;
     private SpriteBatch batch;
     private Skin uiSkin;
+    private Level currentLevel;
 
     private SimpleDateFormat sd;
     private Array<String> debugArray;
@@ -127,6 +130,8 @@ public class HCGame extends Game {
                 if (fail == null){
                     fail = new Fail(batch,this);
                 }
+                playField = null;
+                gameHud = null;
                 Gdx.input.setInputProcessor(fail.stage);
                 fail.stage.draw();
                 fail.stage.act();
@@ -139,7 +144,8 @@ public class HCGame extends Game {
                 break;
             case PLAY:
                 if (playField == null){
-                    playField = new GamePlayField(batch,this);
+                    currentLevel = new Level01(this);
+                    playField = new GamePlayField(batch,currentLevel,this);
                 }
                 if (gameHud == null){
                     gameHud = new GameHud(batch,this);
@@ -235,9 +241,13 @@ public class HCGame extends Game {
         roundTimer = period;
     }
 
-
-
     public void setCurrentAction(Action currentAction) {
+
         this.currentAction = currentAction;
+        this.addDebug("Action set to:"+currentAction.getClass());
+    }
+
+    public Level getCurrentLevel() {
+        return currentLevel;
     }
 }

@@ -18,7 +18,10 @@ import com.coredump.hc.HCGame;
  */
 
 
-    public class NodeActor extends GameButton {
+    public abstract class NodeActor extends GameButton {
+
+        public enum AttackType{SCAN,EXTINGUISH,ICEPICK,SAVE}
+        public enum NodeState{RED,YELLOW,BLUE,GREEN}
 
         private float stateTime = 0;
         private Action currentAction;
@@ -26,6 +29,7 @@ import com.coredump.hc.HCGame;
         private Array<NodeActor> childNodes = new Array<NodeActor>();
         private ShapeRenderer renderer = new ShapeRenderer();
         private boolean enabled = false;
+        protected NodeState state = NodeState.RED;
 
         public NodeActor(Drawable up,Drawable down, HCGame game){
             super(up,down,game);
@@ -93,7 +97,8 @@ import com.coredump.hc.HCGame;
 
         public void clicked(){
             getGame().addDebug(">node Pressed:");
-            currentAction = game.getCurrentAction();
+            currentAction = getGame().getCurrentAction();
+            getGame().addDebug("Node Action set to"+currentAction.getClass());
         }
 
         public void enableChildren(){
@@ -105,6 +110,8 @@ import com.coredump.hc.HCGame;
     public boolean isEnabled() {
         return enabled;
     }
+
+    public abstract boolean processAttack(AttackType attackType);
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;

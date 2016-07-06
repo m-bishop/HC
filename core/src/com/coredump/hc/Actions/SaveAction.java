@@ -9,32 +9,31 @@ import com.coredump.hc.Actors.Nodes.NodeActor;
 import com.coredump.hc.Asset;
 import com.coredump.hc.HCGame;
 
-
 /**
- * Created by Gregory on 5/20/2016.
+ * Created by Gregory on 7/2/2016.
  */
-public class ScanAction extends Action {
+
+public class SaveAction extends Action {
 
     private float stateTime = 0;
     private Animation actAnimation;
 
-    public ScanAction(){
+    public SaveAction(){
         TextureAtlas buttonAtlas = Asset.manager.get(Asset.spritePack,TextureAtlas.class);
         Skin uiSkin = new Skin();
         uiSkin.addRegions(buttonAtlas);
 
-        // TODO: change to new animation once you create one!
-        actAnimation = new Animation(1f,buttonAtlas.findRegions("SYS_B"));
+        actAnimation = new Animation(1f,buttonAtlas.findRegions("Save_R"));
 
     }
 
     @Override
     public void act(HCGame game, NodeActor node) {
         stateTime += Gdx.graphics.getDeltaTime();
-        game.addDebug("Scan Processed:"+stateTime);
+        game.addDebug("Save Processed:"+stateTime);
         if (stateTime >= 3.0) {
             complete = true;
-            node.processAttack(NodeActor.AttackType.SCAN);
+            node.processAttack(NodeActor.AttackType.SAVE);
         }
     }
 
