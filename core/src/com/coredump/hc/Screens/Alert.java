@@ -31,13 +31,13 @@ import com.coredump.hc.HCGame;
 /**
  * Created by Gregory on 2/28/2016.
  */
-public class Fail {
+public class Alert {
     private final float fontScale = 2.5f;
     public Stage stage;
     private Viewport viewport;
     private Game game;
 
-    public Fail(SpriteBatch sb, HCGame game) {
+    public Alert(SpriteBatch sb, HCGame game, String message, Color color) {
 
         this.game = game;
         viewport = new FitViewport(HCGame.V_WIDTH, HCGame.V_HEIGHT, new
@@ -51,11 +51,12 @@ public class Fail {
         Sprite bb = new Sprite(blackBox);
         SpriteDrawable sd = new SpriteDrawable(bb);
 
-       Label connectionLabel = new Label("CONNECTION \r\n TERMINATED", new Label.LabelStyle(new BitmapFont(), Color.RED));
-        connectionLabel.setFontScale(fontScale);
-        connectionLabel.setAlignment(Align.center);
-        connectionLabel.setX((HCGame.V_WIDTH / 2) - (connectionLabel.getWidth() / 2));
-        connectionLabel.setY((HCGame.V_HEIGHT / 2));
+       Label alertLabel = new Label(message, new Label.LabelStyle(new BitmapFont(), color));
+
+        alertLabel.setFontScale(fontScale);
+        alertLabel.setAlignment(Align.center);
+        alertLabel.setX((HCGame.V_WIDTH / 2) - (alertLabel.getWidth() / 2));
+        alertLabel.setY((HCGame.V_HEIGHT / 2));
 
         RepeatAction rAction = new RepeatAction();
         rAction.setCount(RepeatAction.FOREVER);
@@ -74,7 +75,7 @@ public class Fail {
             }
         });
 
-        connectionLabel.addAction(rAction);
+        alertLabel.addAction(rAction);
 
         TextureAtlas buttonAtlas = Asset.manager.get(Asset.spritePack,TextureAtlas.class);
         Skin uiSkin = new Skin();
@@ -92,8 +93,8 @@ public class Fail {
         exitButton.setX(HCGame.V_WIDTH - exitButton.getWidth());
         exitButton.setY(HCGame.V_HEIGHT - exitButton.getHeight());
 
-        CautionActor cautionTop = new CautionActor(connectionLabel.getY()+(connectionLabel.getHeight()*fontScale),100,true);
-        CautionActor cautionBottom = new CautionActor(connectionLabel.getY()-(connectionLabel.getHeight()*fontScale),100,false);
+        CautionActor cautionTop = new CautionActor(alertLabel.getY()+(alertLabel.getHeight()*fontScale),100,true);
+        CautionActor cautionBottom = new CautionActor(alertLabel.getY()-(alertLabel.getHeight()*fontScale),100,false);
 
 
         Image msgWindow = new Image(uiSkin.getDrawable("blackbox"));
@@ -104,7 +105,7 @@ public class Fail {
 
         stage.addActor(msgWindow);
         stage.addActor(cautionTop);
-        stage.addActor(connectionLabel);
+        stage.addActor(alertLabel);
         stage.addActor(cautionBottom);
         stage.addActor(exitButton);
 

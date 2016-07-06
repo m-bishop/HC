@@ -3,6 +3,7 @@ package com.coredump.hc;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -13,7 +14,7 @@ import com.coredump.hc.Actions.Action;
 import com.coredump.hc.Actions.NoAction;
 import com.coredump.hc.Levels.Level;
 import com.coredump.hc.Levels.Level01;
-import com.coredump.hc.Screens.Fail;
+import com.coredump.hc.Screens.Alert;
 import com.coredump.hc.Screens.GameHud;
 import com.coredump.hc.Screens.GamePlayField;
 import com.coredump.hc.Screens.Interlace;
@@ -23,10 +24,11 @@ import com.coredump.hc.Screens.MessageView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class HCGame extends Game {
 
-    public enum GameState{LOADING,MAIN,TEXT,PHONE,BBS,PLAY,FAIL}
+    public enum GameState{LOADING,MAIN,TEXT,PHONE,BBS,PLAY,FAIL,SUCCESS}
     public static final int V_HEIGHT = 480;
     public static final int V_WIDTH = 320;
     public static final int DEBUG_LINES = 27;
@@ -54,7 +56,8 @@ public class HCGame extends Game {
     private MessageView messageView;
     private GamePlayField playField;
     private GameHud gameHud;
-    private Fail fail;
+    private Alert fail;
+    private Alert success;
 
 
     //input
@@ -128,13 +131,24 @@ public class HCGame extends Game {
                 break;
             case FAIL:
                 if (fail == null){
-                    fail = new Fail(batch,this);
+                    fail = new Alert(batch,this,"CONNECTION \r\n TERMINATED", Color.RED);
                 }
                 playField = null;
                 gameHud = null;
                 Gdx.input.setInputProcessor(fail.stage);
                 fail.stage.draw();
                 fail.stage.act();
+                break;
+            case SUCCESS:
+                if (success == null){
+                    success = new Alert(batch,this,"MISSION \r\n COMPLETE", Color.GREEN);
+                }
+                playField = null;
+                gameHud = null;
+                Gdx.input.setInputProcessor(success.stage);
+                success.stage.draw();
+                success.stage.act();
+
                 break;
             case TEXT:
                 break;
@@ -162,7 +176,7 @@ public class HCGame extends Game {
 
                 Gdx.input.setInputProcessor(inputMultiplexer);
                 playField.update();
-                gameHud.getTimeLabel().setText(String.format("%.2f", roundTimer));
+                gameHud.getTimeLabel().setText(String.format(Locale.US,"%.2f", this.roundTimer));
                 gameHud.stage.act();
                 gameHud.stage.draw();
                 break;

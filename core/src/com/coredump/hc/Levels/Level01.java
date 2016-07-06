@@ -49,6 +49,11 @@ public class Level01 extends Level {
 
     @Override
     public void checkWinConditions() {
+        for (NodeActor node : nodes){
+            if (node.getCompleteState() == NodeActor.CompleteType.DATA) {
+                game.setGameState(HCGame.GameState.SUCCESS);
+            }
+        }
 
     }
 

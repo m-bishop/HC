@@ -21,7 +21,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.coredump.hc.Actors.Buttons.ExtinguishButton;
 import com.coredump.hc.Actors.Buttons.GameButton;
+import com.coredump.hc.Actors.Buttons.IcePickButton;
+import com.coredump.hc.Actors.Buttons.SaveButton;
 import com.coredump.hc.Actors.Buttons.ScanButton;
 import com.coredump.hc.Asset;
 import com.coredump.hc.HCGame;
@@ -98,51 +101,17 @@ public class GameHud {
 
         ScanButton scanButton = new ScanButton(game);
 
-        Button extinguishButton = new GameButton(uiSkin.getDrawable("Extinguish_R"),uiSkin.getDrawable("Extinguish_D"),game);
-        //extinguishButton.setX(85f);
-        //extinguishButton.setY(10f);
-        extinguishButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                ((GameButton) event.getTarget()).getGame().addDebug(">Extinguish Button Pressed:");
+        Button extinguishButton = new ExtinguishButton(game);
 
-            }
-        });
+        Button pickButton = new IcePickButton(game);
 
-        Button pickButton = new GameButton(uiSkin.getDrawable("Icepick_R"),uiSkin.getDrawable("Icepick_D"),game);
-        //pickButton.setX(160f);
-        //pickButton.setY(10f);
-        pickButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                ((GameButton) event.getTarget()).getGame().addDebug(">pick Button Pressed:");
-
-            }
-        });
-
-        Button saveButton = new GameButton(uiSkin.getDrawable("Save_R"),uiSkin.getDrawable("Save_D"),game);
-        //saveButton.setX(235f);
-        //saveButton.setY(10f);
-        saveButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                ((GameButton) event.getTarget()).getGame().addDebug(">save Button Pressed:");
-
-            }
-        });
+        Button saveButton = new SaveButton(game);
 
         listTable.add(scanButton);
         listTable.add(extinguishButton);
         listTable.add(pickButton);
         listTable.add(saveButton);
 
-        listTable.add(new GameButton(uiSkin.getDrawable("Save_R"),uiSkin.getDrawable("Save_D"),game));
-        listTable.add(new GameButton(uiSkin.getDrawable("Save_R"),uiSkin.getDrawable("Save_D"),game));
-        listTable.add(new GameButton(uiSkin.getDrawable("Save_R"),uiSkin.getDrawable("Save_D"),game));
-        listTable.add(new GameButton(uiSkin.getDrawable("Save_R"),uiSkin.getDrawable("Save_D"),game));
-        listTable.add(new GameButton(uiSkin.getDrawable("Save_R"),uiSkin.getDrawable("Save_D"),game));
-        listTable.add(new GameButton(uiSkin.getDrawable("Save_R"),uiSkin.getDrawable("Save_D"),game));
-        listTable.add(new GameButton(uiSkin.getDrawable("Save_R"),uiSkin.getDrawable("Save_D"),game));
 
         //stage.addActor(saveButton);
         //stage.addActor(pickButton);

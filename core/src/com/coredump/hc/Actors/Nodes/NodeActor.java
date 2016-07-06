@@ -22,6 +22,7 @@ import com.coredump.hc.HCGame;
 
         public enum AttackType{SCAN,EXTINGUISH,ICEPICK,SAVE}
         public enum NodeState{RED,YELLOW,BLUE,GREEN}
+        public enum CompleteType{DATA,FIREWALL,SYSTEM,INCOMPLETE}
 
         private float stateTime = 0;
         private Action currentAction;
@@ -29,7 +30,9 @@ import com.coredump.hc.HCGame;
         private Array<NodeActor> childNodes = new Array<NodeActor>();
         private ShapeRenderer renderer = new ShapeRenderer();
         private boolean enabled = false;
+
         protected NodeState state = NodeState.RED;
+        protected CompleteType completeState = CompleteType.INCOMPLETE;
 
         public NodeActor(Drawable up,Drawable down, HCGame game){
             super(up,down,game);
@@ -105,6 +108,10 @@ import com.coredump.hc.HCGame;
             for (NodeActor node : childNodes) {
                 node.setEnabled(true);
             }
+        }
+
+        public CompleteType getCompleteState() {
+            return completeState;
         }
 
     public boolean isEnabled() {

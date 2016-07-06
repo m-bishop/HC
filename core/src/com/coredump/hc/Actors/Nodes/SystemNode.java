@@ -37,6 +37,7 @@ public class SystemNode extends NodeActor {
             case ICEPICK:
                 if (state == NodeState.RED) {
                     this.state = NodeState.GREEN;
+                    this.completeState = CompleteType.SYSTEM;
                     this.getStyle().up = new AnimatedDrawable(new Animation(1f, Asset.manager.get(Asset.spritePack, TextureAtlas.class).findRegions("SYS_G")));
                     this.setSize(getPrefWidth(), getPrefHeight());
                     retVal = true;

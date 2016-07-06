@@ -40,7 +40,7 @@ public class DataBaseNode extends NodeActor {
                 break;
             case SAVE:
                 if (state == NodeState.GREEN) {
-
+                    this.completeState = CompleteType.DATA;
                     retVal = true;
                 }
                 break;

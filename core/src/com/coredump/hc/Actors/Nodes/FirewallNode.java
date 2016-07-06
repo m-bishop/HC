@@ -30,6 +30,7 @@ public class FirewallNode extends NodeActor {
             case EXTINGUISH:
                 if (state == NodeState.RED) {
                     this.state = NodeState.GREEN;
+                    this.completeState = CompleteType.FIREWALL;
                     this.getStyle().up = new AnimatedDrawable(new Animation(1f, Asset.manager.get(Asset.spritePack, TextureAtlas.class).findRegions("FW_G")));
                     this.setSize(getPrefWidth(), getPrefHeight());
                     retVal = true;
