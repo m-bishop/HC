@@ -1,5 +1,6 @@
 package com.coredump.hc.Levels;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import com.coredump.hc.Actors.Nodes.DataBaseNode;
 import com.coredump.hc.Actors.Nodes.FirewallNode;
@@ -11,6 +12,8 @@ import com.coredump.hc.HCGame;
  * Created by Gregory on 6/20/2016.
  */
 public class Level01 extends Level {
+
+    private float roundTimer;
 
     public Level01(HCGame game){
         super(game);
@@ -44,7 +47,7 @@ public class Level01 extends Level {
         node1.setChildren(new Array<NodeActor>(new NodeActor[]{node1,node2,node3}));
         node2.setChildren(new Array<NodeActor>(new NodeActor[]{node1}));
 
-        this.game.startRound(30);
+        roundTimer = 30;
     }
 
     @Override
@@ -59,6 +62,15 @@ public class Level01 extends Level {
 
     @Override
     public void checkLoseConditions() {
+        roundTimer -= Gdx.graphics.getDeltaTime();
 
+        if (roundTimer <= 0){
+            game.setGameState(HCGame.GameState.FAIL);
+        }
+
+    }
+
+    public float getRoundTimer() {
+        return roundTimer;
     }
 }

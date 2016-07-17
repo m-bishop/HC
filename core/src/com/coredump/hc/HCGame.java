@@ -45,9 +45,6 @@ public class HCGame extends Game {
 
     private SimpleDateFormat sd;
     private Array<String> debugArray;
-    private float roundTimer;
-
-
 
     // screens
     private Loading loading;
@@ -172,11 +169,13 @@ public class HCGame extends Game {
 
                 }
 
-                this.processRoundLogic();
-
                 Gdx.input.setInputProcessor(inputMultiplexer);
                 playField.update();
-                gameHud.getTimeLabel().setText(String.format(Locale.US,"%.2f", this.roundTimer));
+                if (currentLevel.getRoundTimer() >= 0) { // only display positive time values
+                    gameHud.getTimeLabel().setText(String.format(Locale.US, "%.2f", currentLevel.getRoundTimer()));
+                } else {
+                    gameHud.getTimeLabel().setVisible(false);
+                }
                 gameHud.stage.act();
                 gameHud.stage.draw();
                 break;
@@ -243,17 +242,7 @@ public class HCGame extends Game {
         return uiSkin;
     }
 
-    private void processRoundLogic(){
-        roundTimer -= Gdx.graphics.getDeltaTime();
 
-        if (roundTimer <= 0){
-            this.gameState = GameState.FAIL;
-        }
-    }
-
-    public void startRound(float period){
-        roundTimer = period;
-    }
 
     public void setCurrentAction(Action currentAction) {
 

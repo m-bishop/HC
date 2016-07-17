@@ -31,7 +31,7 @@ public class SaveAction extends Action {
     public void act(HCGame game, NodeActor node) {
         stateTime += Gdx.graphics.getDeltaTime();
         game.addDebug("Save Processed:"+stateTime);
-        if (stateTime >= 3.0) {
+        if (stateTime >= 5.0) {
             complete = true;
             node.processAttack(NodeActor.AttackType.SAVE);
         }

@@ -88,11 +88,13 @@ import com.coredump.hc.HCGame;
         public void draw(Batch batch, float alpha){
 
             if (this.isEnabled()) {
-                super.draw(batch, alpha);
-                //draw action keyframe over current node keyframe
+
+                //draw action keyframe if there is one.
                 if (this.currentAction.hasKeyframe()) {
                     TextureRegion keyFrame = this.currentAction.getKeyFrame();
                     batch.draw(keyFrame, this.getX(), this.getY(), keyFrame.getRegionWidth(), keyFrame.getRegionHeight());
+                }else {// draw default keyframe
+                    super.draw(batch, alpha);
                 }
             }
 

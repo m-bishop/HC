@@ -32,5 +32,9 @@ public abstract class Level {
         return nodes;
     }
 
+    public float getRoundTimer() {
+        return -1; // Default for if a game is not timed.
+    }
+
     
 }
