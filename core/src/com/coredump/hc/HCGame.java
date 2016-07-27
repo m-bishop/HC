@@ -150,8 +150,37 @@ public class HCGame extends Game {
             case TEXT:
                 break;
             case PHONE:
+
+                //currentLevel = new Level01(this);
+                try {
+                    currentLevel = (Level) Class.forName("Level" + Asset.getLevel()).newInstance();
+                }
+                catch (Exception e){
+
+                }
+                playField = new GamePlayField(batch,currentLevel,this);
+
+                gameHud = new GameHud(batch,this);
+                gestureDetector = new GestureDetector(playField.camControl);
+                inputMultiplexer = new InputMultiplexer(Gdx.input.getInputProcessor());
+
+                inputMultiplexer.addProcessor(playField.stage);
+                inputMultiplexer.addProcessor(gestureDetector);
+                inputMultiplexer.addProcessor(gameHud.stage);
+
+                Gdx.input.setInputProcessor(inputMultiplexer);
+                playField.update();
+                if (currentLevel.getRoundTimer() >= 0) { // only display positive time values
+                    gameHud.getTimeLabel().setText(String.format(Locale.US, "%.2f", currentLevel.getRoundTimer()));
+                } else {
+                    gameHud.getTimeLabel().setVisible(false);
+                }
+                gameHud.stage.act();
+                gameHud.stage.draw();
                 break;
             case BBS:
+
+
                 break;
             case PLAY:
                 if (playField == null){

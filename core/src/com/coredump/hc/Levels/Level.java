@@ -14,16 +14,17 @@ public abstract class Level {
 
     public Level(HCGame game){
         this.game = game;
-        this.initialize();
+        this.initPlay();
     }
 
-    public abstract void initialize();
+    public abstract void initPlay();
 
     public abstract void checkWinConditions();
 
     public abstract void checkLoseConditions();
 
     public void act(){
+        // keep win/lose conditions separate, so that if there is a tie, player always wins.
         this.checkWinConditions();
         this.checkLoseConditions();
     }
