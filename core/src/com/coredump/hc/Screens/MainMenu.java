@@ -107,6 +107,7 @@ public class MainMenu {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 ((GameButton) event.getTarget()).getGame().addDebug(">phone Button  Pressed:");
+                ((GameButton) event.getTarget()).getGame().setGameState(HCGame.GameState.PHONE);
             }
         });
         bbsButton = new GameButton(uiSkin.getDrawable("Skull_UP"),uiSkin.getDrawable("Skull_DN"),game);
@@ -114,6 +115,7 @@ public class MainMenu {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 ((GameButton) event.getTarget()).getGame().addDebug(">bbs Button Pressed:");
+                ((GameButton) event.getTarget()).getGame().setGameState(HCGame.GameState.BBS);
             }
         });
 

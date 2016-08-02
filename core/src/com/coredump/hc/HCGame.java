@@ -5,16 +5,27 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.coredump.hc.Actions.Action;
 import com.coredump.hc.Actions.NoAction;
+import com.coredump.hc.Actors.BadActor;
+import com.coredump.hc.Actors.Buttons.GameButton;
+import com.coredump.hc.Actors.MapActor;
 import com.coredump.hc.Levels.Level;
 import com.coredump.hc.Levels.Level01;
 import com.coredump.hc.Screens.Alert;
+import com.coredump.hc.Screens.ContentPane;
+import com.coredump.hc.Screens.ContentViewer;
 import com.coredump.hc.Screens.GameHud;
 import com.coredump.hc.Screens.GamePlayField;
 import com.coredump.hc.Screens.Interlace;
@@ -22,6 +33,7 @@ import com.coredump.hc.Screens.Loading;
 import com.coredump.hc.Screens.MainMenu;
 import com.coredump.hc.Screens.MessageView;
 
+import java.lang.reflect.Constructor;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -55,7 +67,8 @@ public class HCGame extends Game {
     private GameHud gameHud;
     private Alert fail;
     private Alert success;
-
+    private ContentViewer viewer;
+    private ContentPane content;
 
     //input
     private GestureDetector gestureDetector ;
@@ -91,6 +104,8 @@ public class HCGame extends Game {
             interlace.stage.act();
         }
 
+
+
         switch (gameState){
             case LOADING:
                 this.addDebug("Loading...");
@@ -113,6 +128,18 @@ public class HCGame extends Game {
                     TextureAtlas buttonAtlas = Asset.manager.get(Asset.spritePack,TextureAtlas.class);
                     uiSkin = new Skin();
                     uiSkin.addRegions(buttonAtlas);
+                    if (currentLevel == null){
+                        try {
+                            Gdx.app.log("Loading","level"+ Asset.getLevel());
+                            Constructor<?> cons = Class.forName("com.coredump.hc.Levels.Level01").getConstructor(HCGame.class);
+                            currentLevel = (Level) cons.newInstance(this);
+                        }
+                        catch (Exception e){
+                            Gdx.app.log("Error creating level",e.getMessage());
+                            e.printStackTrace();
+                            //TODO: Create an error message system for users
+                        }
+                    }
                 }
 
                 break;
@@ -150,41 +177,57 @@ public class HCGame extends Game {
             case TEXT:
                 break;
             case PHONE:
-
-                //currentLevel = new Level01(this);
-                try {
-                    currentLevel = (Level) Class.forName("Level" + Asset.getLevel()).newInstance();
+                if (messageView == null){
+                    messageView = new MessageView(batch);
                 }
-                catch (Exception e){
 
-                }
-                playField = new GamePlayField(batch,currentLevel,this);
+                Gdx.input.setInputProcessor(messageView.stage);
+                messageView.stage.draw();
+                messageView.stage.act();
 
-                gameHud = new GameHud(batch,this);
-                gestureDetector = new GestureDetector(playField.camControl);
-                inputMultiplexer = new InputMultiplexer(Gdx.input.getInputProcessor());
-
-                inputMultiplexer.addProcessor(playField.stage);
-                inputMultiplexer.addProcessor(gestureDetector);
-                inputMultiplexer.addProcessor(gameHud.stage);
-
-                Gdx.input.setInputProcessor(inputMultiplexer);
-                playField.update();
-                if (currentLevel.getRoundTimer() >= 0) { // only display positive time values
-                    gameHud.getTimeLabel().setText(String.format(Locale.US, "%.2f", currentLevel.getRoundTimer()));
-                } else {
-                    gameHud.getTimeLabel().setVisible(false);
-                }
-                gameHud.stage.act();
-                gameHud.stage.draw();
                 break;
             case BBS:
+                if (content == null){
+                    Array<Actor> actors = new Array<Actor>();
+                    //actors.add(new MapActor());
 
+                    GameButton hackButton = new GameButton(uiSkin.getDrawable("Hack_UP"),uiSkin.getDrawable("Hack_DN"),this);
+                    hackButton.addListener(new ClickListener() {
+                        @Override
+                        public void clicked(InputEvent event, float x, float y) {
+                            HCGame game = ((GameButton) event.getTarget()).getGame();
+                            game.addDebug("Forum Button Pressed");
+                            Array<Actor> actors = new Array<Actor>();
+                            actors.add(new BadActor("Page01.png"));
+                            ContentPane content2 = new ContentPane(batch,game,actors);
+                            ((GameButton) event.getTarget()).getGame().setContent(content2);
+                        }
+                    });
 
+                    actors.add(new BadActor("Index.png"));
+                    actors.add(hackButton);
+                    content = new ContentPane(batch,this,actors);
+                }
+                if (viewer == null){
+                    viewer = new ContentViewer(batch,this);
+                    gestureDetector = new GestureDetector(content.camControl);
+                    inputMultiplexer = new InputMultiplexer(Gdx.input.getInputProcessor());
+
+                    inputMultiplexer.addProcessor(content.stage);
+                    inputMultiplexer.addProcessor(gestureDetector);
+                    inputMultiplexer.addProcessor(viewer.stage);
+
+                }
+
+                Gdx.input.setInputProcessor(inputMultiplexer);
+                content.update();
+
+                viewer.stage.act();
+                viewer.stage.draw();
                 break;
             case PLAY:
                 if (playField == null){
-                    currentLevel = new Level01(this);
+                    currentLevel.initPlay();
                     playField = new GamePlayField(batch,currentLevel,this);
                 }
                 if (gameHud == null){
@@ -281,5 +324,11 @@ public class HCGame extends Game {
 
     public Level getCurrentLevel() {
         return currentLevel;
+    }
+
+    public void setContent(ContentPane content) {
+        ContentPane c = this.content; // calls clear() on all actors, custom actors must override clear to dispose of Texture objects!
+        this.content = content;
+        c.dispose();
     }
 }

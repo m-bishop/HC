@@ -21,6 +21,8 @@ public class Level01 extends Level {
 
     @Override
     public void initPlay() {
+        nodes.clear();
+
         SystemNode node0 = new SystemNode(game);
         node0.setX(150f);
         node0.setY(100f);

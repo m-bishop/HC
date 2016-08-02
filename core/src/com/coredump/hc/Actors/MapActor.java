@@ -21,7 +21,6 @@ public class MapActor extends Actor {
         Skin uiSkin = new Skin();
         uiSkin.addRegions(buttonAtlas);
         map = uiSkin.getDrawable("SCMap");
-
     }
 
 
