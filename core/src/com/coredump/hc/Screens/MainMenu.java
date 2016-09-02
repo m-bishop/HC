@@ -13,18 +13,22 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.coredump.hc.Actors.Buttons.GameButton;
 import com.coredump.hc.Asset;
 import com.coredump.hc.HCGame;
+import com.coredump.hc.HCMessage;
 
 
 /**
@@ -150,15 +154,47 @@ public class MainMenu {
 
 
         // TODO: load real alerts
+
+        for (HCMessage message : this.game.getMessages()){
+
+            GameButton testbutton = new GameButton(uiSkin.getDrawable("Skull_UP"),uiSkin.getDrawable("Skull_DN"),game);
+            testbutton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    ((GameButton) event.getTarget()).getGame().addDebug(">test Button Pressed:");
+                    ((GameButton) event.getTarget()).getGame().setGameState(HCGame.GameState.TEXT);
+                }
+            });
+
+            Label testButtonLabel = new Label(message.getSubject(), new Label.LabelStyle(new BitmapFont(), Color.YELLOW));
+            testButtonLabel.setAlignment(Align.left);
+            listTable.add(testButtonLabel).align(Align.left);
+            listTable.add(testbutton).expand().align(Align.right);
+            listTable.row();
+        }
+        /*
         Label line1 = new Label("Mission Accomplished! 20 Rep earned.  ", new Label.LabelStyle(new BitmapFont(), Color.YELLOW));
         //line1.setFontScale(1.5f);
         listTable.add(line1);
         listTable.row();
         for (int i = 1; i < 20; i++) {
-            Label label = new Label(("New Voice Mail! "+i), new Label.LabelStyle(new BitmapFont(), Color.YELLOW));
+            TextButton label = new TextButton(("New Voice Mail! "+i),new TextButton.TextButtonStyle(uiSkin.getDrawable("blackbox"),uiSkin.getDrawable("blackbox"),uiSkin.getDrawable("blackbox"),new BitmapFont()));
+
+            //label.setText(("New Voice Mail! "+i));
+            label.getLabel().setStyle(new Label.LabelStyle(new BitmapFont(), Color.YELLOW));
+            //ImageTextButton label = new ImageTextButton(("New Voice Mail! "+i),  new ImageTextButton.ImageTextButtonStyle());
             //label.setFontScale(1.5f);
-            label.setAlignment(Align.left);
+            label.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    Gdx.app.debug("message:","message clicked");
+                }
+            });
+            label.getLabel().setStyle(new Label.LabelStyle(new BitmapFont(), Color.YELLOW));
+            //label.setColor(Color.YELLOW);
+            label.getLabel().setAlignment(Align.left);
             listTable.add(label).align(Align.left);
+            //listTable.addActor(label);
             listTable.row();
         }
         listTable.row();
@@ -166,12 +202,27 @@ public class MainMenu {
         listTable.row();
         listTable.add(new Button(uiSkin.getDrawable("Skull_UP"), uiSkin.getDrawable("Skull_DN")));
         listTable.row();
-        Button test = new Button(uiSkin.getDrawable("Skull_UP"),uiSkin.getDrawable("Skull_DN"));
-        test.setX(200);
-        test.setY(200);
-        listTable.add(test);
-        listTable.row();
-        listTable.add(new Button(uiSkin.getDrawable("Skull_UP"), uiSkin.getDrawable("Skull_DN")));
+      //  Button test = new Button(uiSkin.getDrawable("Skull_UP"),uiSkin.getDrawable("Skull_DN"));
+       // test.setX(200);
+       // test.setY(200);
+       // listTable.add(test);
+       // listTable.row();
+       // listTable.add(new Button(uiSkin.getDrawable("Skull_UP"), uiSkin.getDrawable("Skull_DN")));
+        GameButton testbutton = new GameButton(uiSkin.getDrawable("Skull_UP"),uiSkin.getDrawable("Skull_DN"),game);
+        testbutton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ((GameButton) event.getTarget()).getGame().addDebug(">test Button Pressed:");
+                ((GameButton) event.getTarget()).getGame().setGameState(HCGame.GameState.TEXT);
+            }
+        });
+        //listTable.addActor(testbutton);
+
+        Label testButtonLabel = new Label("Accomplished! 20 Rep earned.  ", new Label.LabelStyle(new BitmapFont(), Color.YELLOW));
+        testButtonLabel.setAlignment(Align.left);
+        listTable.add(testButtonLabel).align(Align.left);
+        listTable.add(testbutton).expand().align(Align.right);
+        */
 
         Image buttonBack = new Image(uiSkin.getDrawable("blackbox"));
         buttonBack.setX(0);

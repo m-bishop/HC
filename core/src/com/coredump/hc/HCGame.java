@@ -31,6 +31,7 @@ import com.coredump.hc.Screens.GamePlayField;
 import com.coredump.hc.Screens.Interlace;
 import com.coredump.hc.Screens.Loading;
 import com.coredump.hc.Screens.MainMenu;
+import com.coredump.hc.Screens.MessageList;
 import com.coredump.hc.Screens.MessageView;
 
 import java.lang.reflect.Constructor;
@@ -57,6 +58,7 @@ public class HCGame extends Game {
 
     private SimpleDateFormat sd;
     private Array<String> debugArray;
+    private Array<HCMessage> messages;
 
     // screens
     private Loading loading;
@@ -69,6 +71,7 @@ public class HCGame extends Game {
     private Alert success;
     private ContentViewer viewer;
     private ContentPane content;
+    private MessageList messageList;
 
     //input
     private GestureDetector gestureDetector ;
@@ -130,9 +133,11 @@ public class HCGame extends Game {
                     uiSkin.addRegions(buttonAtlas);
                     if (currentLevel == null){
                         try {
+                            this.loadMessages();
                             Gdx.app.log("Loading","level"+ Asset.getLevel());
                             Constructor<?> cons = Class.forName("com.coredump.hc.Levels.Level01").getConstructor(HCGame.class);
                             currentLevel = (Level) cons.newInstance(this);
+
                         }
                         catch (Exception e){
                             Gdx.app.log("Error creating level",e.getMessage());
@@ -175,16 +180,22 @@ public class HCGame extends Game {
 
                 break;
             case TEXT:
-                break;
-            case PHONE:
                 if (messageView == null){
-                    messageView = new MessageView(batch);
+                    messageView = new MessageView(batch,this);
                 }
 
                 Gdx.input.setInputProcessor(messageView.stage);
                 messageView.stage.draw();
                 messageView.stage.act();
+                break;
+            case PHONE:
+                if (messageList == null){
+                    messageList = new MessageList(batch,this);
+                }
 
+                Gdx.input.setInputProcessor(messageList.stage);
+                messageList.stage.draw();
+                messageList.stage.act();
                 break;
             case BBS:
                 if (content == null){
@@ -292,9 +303,20 @@ public class HCGame extends Game {
     @Override
     public void resume(){
         System.out.println("resume");
-
-        mainMenu = new MainMenu(batch,this);
+        this.setGameState(GameState.LOADING);
+        //mainMenu = new MainMenu(batch,this);
     }
+
+    public void loadMessages(){
+        this.messages = new Array<HCMessage>();
+        this.messages.add(new HCMessage("Test0","This is message 0",0));
+        this.messages.add(new HCMessage("Test1","This is message 1",0));
+        this.messages.add(new HCMessage("Test2","This is message 2",0));
+        this.messages.add(new HCMessage("Test3","This is message 3",0));
+        this.messages.add(new HCMessage("Test4","This is message 4",0));
+        this.messages.add(new HCMessage("Test5","This is message 5",0));
+
+    };
 
     public GameState getGameState() {
         return gameState;
@@ -321,7 +343,7 @@ public class HCGame extends Game {
         this.currentAction = currentAction;
         this.addDebug("Action set to:"+currentAction.getClass());
     }
-
+ 
     public Level getCurrentLevel() {
         return currentLevel;
     }
@@ -330,5 +352,9 @@ public class HCGame extends Game {
         ContentPane c = this.content; // calls clear() on all actors, custom actors must override clear to dispose of Texture objects!
         this.content = content;
         c.dispose();
+    }
+
+    public Array<HCMessage> getMessages() {
+        return messages;
     }
 }

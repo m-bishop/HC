@@ -9,16 +9,20 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.coredump.hc.Actors.Buttons.GameButton;
 import com.coredump.hc.Asset;
 import com.coredump.hc.HCGame;
 
@@ -39,7 +43,7 @@ public class MessageView {
     private TextureAtlas buttonAtlas;
     private Image background;
 
-    public MessageView(SpriteBatch sb){
+    public MessageView(SpriteBatch sb, HCGame game){
         viewport = new FitViewport(HCGame.V_WIDTH, HCGame.V_HEIGHT, new
                 OrthographicCamera());
         stage = new Stage(viewport, sb);
@@ -77,10 +81,23 @@ public class MessageView {
         //line1.setWrap(true);
         listTable.add(line1).align(Align.left);
 
+        Button exitButton = new GameButton(uiSkin.getDrawable("EXIT_UP"),uiSkin.getDrawable("EXIT_DN"),game);
+        exitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                ((GameButton) event.getTarget()).getGame().addDebug(">HUD exit Button Pressed:");
+                ((GameButton) event.getTarget()).getGame().setGameState(HCGame.GameState.PHONE);
+            }
+        });
+
+        exitButton.setX(HCGame.V_WIDTH - exitButton.getWidth());
+        exitButton.setY(HCGame.V_HEIGHT - exitButton.getHeight());
+
 
         stage.addActor(background);
         //  stage.addActor(buttonTable);
         stage.addActor(container);
+        stage.addActor(exitButton);
 
         Gdx.input.setInputProcessor(stage);
     }
