@@ -234,8 +234,8 @@ public class MainMenu {
         stage.addActor(timeLabel);
         stage.addActor(buttonBack);
         stage.addActor(buttonTable);
-        stage.addActor(msgWindow);
-        stage.addActor(container);
+        //stage.addActor(msgWindow);
+        //stage.addActor(container);
 
 
 

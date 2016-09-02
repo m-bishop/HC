@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.coredump.hc.Actors.Buttons.GameButton;
+import com.coredump.hc.Actors.Buttons.MessageButton;
 import com.coredump.hc.Asset;
 import com.coredump.hc.HCGame;
 import com.coredump.hc.HCMessage;
@@ -85,23 +86,16 @@ public class MessageList {
         container.add(scroll).fill().expand();
 
 
-        // TODO: load real alerts
+        for (HCMessage currentMessage : game.getMessages()){
 
-        for (HCMessage message : game.getMessages()){
+            MessageButton messageButton = new MessageButton(game);
+            Gdx.app.log("debug","loading Message:"+currentMessage.getSubject());
+            messageButton.setMessage(currentMessage);
 
-            GameButton testbutton = new GameButton(uiSkin.getDrawable("Skull_UP"),uiSkin.getDrawable("Skull_DN"),game);
-            testbutton.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    ((GameButton) event.getTarget()).getGame().addDebug(">test Button Pressed:");
-                    ((GameButton) event.getTarget()).getGame().setGameState(HCGame.GameState.TEXT);
-                }
-            });
-
-            Label testButtonLabel = new Label(message.getSubject(), new Label.LabelStyle(new BitmapFont(), Color.YELLOW));
+            Label testButtonLabel = new Label(currentMessage.getSubject(), new Label.LabelStyle(new BitmapFont(), Color.YELLOW));
             testButtonLabel.setAlignment(Align.left);
             listTable.add(testButtonLabel).align(Align.left);
-            listTable.add(testbutton).expand().align(Align.right);
+            listTable.add(messageButton).expand().align(Align.right);
             listTable.row();
         }
 

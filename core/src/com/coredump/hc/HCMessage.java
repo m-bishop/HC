@@ -7,12 +7,11 @@ public class HCMessage {
 
     private String subject;
     private String body;
-    private int msgID;
 
-    public HCMessage(String subject, String body, int msgID){
+
+    public HCMessage(String subject, String body){
         this.subject = subject;
         this.body = body;
-        this.msgID = msgID;
     }
 
     public String getBody() {
@@ -23,7 +22,4 @@ public class HCMessage {
         return subject;
     }
 
-    public int getMsgID() {
-        return msgID;
-    }
 }

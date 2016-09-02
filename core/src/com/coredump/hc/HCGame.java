@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.StringBuilder;
 import com.coredump.hc.Actions.Action;
 import com.coredump.hc.Actions.NoAction;
 import com.coredump.hc.Actors.BadActor;
@@ -55,6 +56,7 @@ public class HCGame extends Game {
     private SpriteBatch batch;
     private Skin uiSkin;
     private Level currentLevel;
+    private HCMessage currentMessage;
 
     private SimpleDateFormat sd;
     private Array<String> debugArray;
@@ -135,7 +137,7 @@ public class HCGame extends Game {
                         try {
                             this.loadMessages();
                             Gdx.app.log("Loading","level"+ Asset.getLevel());
-                            Constructor<?> cons = Class.forName("com.coredump.hc.Levels.Level01").getConstructor(HCGame.class);
+                            Constructor<?> cons = Class.forName("com.coredump.hc.Levels.Level"+Asset.getLevel()).getConstructor(HCGame.class);
                             currentLevel = (Level) cons.newInstance(this);
 
                         }
@@ -183,7 +185,7 @@ public class HCGame extends Game {
                 if (messageView == null){
                     messageView = new MessageView(batch,this);
                 }
-
+                messageView.update();
                 Gdx.input.setInputProcessor(messageView.stage);
                 messageView.stage.draw();
                 messageView.stage.act();
@@ -309,12 +311,12 @@ public class HCGame extends Game {
 
     public void loadMessages(){
         this.messages = new Array<HCMessage>();
-        this.messages.add(new HCMessage("Test0","This is message 0",0));
-        this.messages.add(new HCMessage("Test1","This is message 1",0));
-        this.messages.add(new HCMessage("Test2","This is message 2",0));
-        this.messages.add(new HCMessage("Test3","This is message 3",0));
-        this.messages.add(new HCMessage("Test4","This is message 4",0));
-        this.messages.add(new HCMessage("Test5","This is message 5",0));
+        this.messages.add(new HCMessage("Test0","This is message 0"));
+        this.messages.add(new HCMessage("Test1","This is message 1"));
+        this.messages.add(new HCMessage("Test2","This is message 2"));
+        this.messages.add(new HCMessage("Test3","This is message 3"));
+        this.messages.add(new HCMessage("Test4","This is message 4"));
+        this.messages.add(new HCMessage("Test5","This is message 5"));
 
     };
 
@@ -352,6 +354,15 @@ public class HCGame extends Game {
         ContentPane c = this.content; // calls clear() on all actors, custom actors must override clear to dispose of Texture objects!
         this.content = content;
         c.dispose();
+    }
+
+    public HCMessage getCurrentMessage() {
+        return currentMessage;
+    }
+
+    public void setCurrentMessage(HCMessage currentMessage) {
+        Gdx.app.log("debug","setting current message:"+currentMessage.getSubject());
+        this.currentMessage = currentMessage;
     }
 
     public Array<HCMessage> getMessages() {

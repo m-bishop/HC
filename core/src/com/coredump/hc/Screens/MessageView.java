@@ -35,8 +35,10 @@ public class MessageView {
     private final float MESSAGE_HEIGHT = 200f;
 
     public Stage stage;
+    private HCGame game;
     private Viewport viewport;
     private Table buttonTable;
+    private Label message;
 
     //assets
     private Skin uiSkin;
@@ -44,6 +46,7 @@ public class MessageView {
     private Image background;
 
     public MessageView(SpriteBatch sb, HCGame game){
+        this.game = game;
         viewport = new FitViewport(HCGame.V_WIDTH, HCGame.V_HEIGHT, new
                 OrthographicCamera());
         stage = new Stage(viewport, sb);
@@ -77,9 +80,9 @@ public class MessageView {
         container.add(scroll).fill().expand();
 
         // TODO: load real MESSAGES
-        Label line1 = new Label("Congrats!\n\n This message is a test!\nWe hope it looks as good as it possibly can.  ", new Label.LabelStyle(new BitmapFont(), Color.YELLOW));
+         message = new Label(game.getCurrentMessage().getBody(), new Label.LabelStyle(new BitmapFont(), Color.YELLOW));
         //line1.setWrap(true);
-        listTable.add(line1).align(Align.left);
+        listTable.add(message).align(Align.left);
 
         Button exitButton = new GameButton(uiSkin.getDrawable("EXIT_UP"),uiSkin.getDrawable("EXIT_DN"),game);
         exitButton.addListener(new ClickListener() {
@@ -95,10 +98,13 @@ public class MessageView {
 
 
         stage.addActor(background);
-        //  stage.addActor(buttonTable);
         stage.addActor(container);
         stage.addActor(exitButton);
 
         Gdx.input.setInputProcessor(stage);
+    }
+
+    public void update(){
+        message.setText(this.game.getCurrentMessage().getBody());
     }
 }
