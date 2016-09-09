@@ -53,6 +53,7 @@ public class ContentViewer {
             public void clicked(InputEvent event, float x, float y) {
                 ((GameButton) event.getTarget()).getGame().addDebug(">HUD exit Button Pressed:");
                 ((GameButton) event.getTarget()).getGame().setGameState(HCGame.GameState.MAIN);
+                ((GameButton) event.getTarget()).getGame().setContent(null);
             }
         });
 

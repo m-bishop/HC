@@ -7,11 +7,13 @@ public class HCMessage {
 
     private String subject;
     private String body;
+    private String avatar;
 
 
-    public HCMessage(String subject, String body){
+    public HCMessage(String subject, String body, String avatar){
         this.subject = subject;
         this.body = body;
+        this.avatar = avatar;
     }
 
     public String getBody() {
@@ -21,5 +23,7 @@ public class HCMessage {
     public String getSubject() {
         return subject;
     }
+
+    public String getAvatar() { return avatar; }
 
 }

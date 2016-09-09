@@ -23,6 +23,7 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.coredump.hc.Actors.Buttons.GameButton;
+import com.coredump.hc.Actors.ImageActor;
 import com.coredump.hc.Asset;
 import com.coredump.hc.HCGame;
 
@@ -39,6 +40,7 @@ public class MessageView {
     private Viewport viewport;
     private Table buttonTable;
     private Label message;
+    private ImageActor avatar;
 
     //assets
     private Skin uiSkin;
@@ -79,10 +81,16 @@ public class MessageView {
         scroll.layout();
         container.add(scroll).fill().expand();
 
-        // TODO: load real MESSAGES
+
          message = new Label(game.getCurrentMessage().getBody(), new Label.LabelStyle(new BitmapFont(), Color.YELLOW));
         //line1.setWrap(true);
         listTable.add(message).align(Align.left);
+
+        avatar = new ImageActor(game.getCurrentMessage().getAvatar());
+        avatar.setX(0);
+       // avatar.setY(100);
+        avatar.setY(HCGame.V_HEIGHT - avatar.getHeight());
+
 
         Button exitButton = new GameButton(uiSkin.getDrawable("EXIT_UP"),uiSkin.getDrawable("EXIT_DN"),game);
         exitButton.addListener(new ClickListener() {
@@ -100,11 +108,9 @@ public class MessageView {
         stage.addActor(background);
         stage.addActor(container);
         stage.addActor(exitButton);
+        stage.addActor(avatar);
 
         Gdx.input.setInputProcessor(stage);
     }
 
-    public void update(){
-        message.setText(this.game.getCurrentMessage().getBody());
-    }
 }

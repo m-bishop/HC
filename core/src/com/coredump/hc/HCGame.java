@@ -5,25 +5,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.StringBuilder;
 import com.coredump.hc.Actions.Action;
 import com.coredump.hc.Actions.NoAction;
-import com.coredump.hc.Actors.BadActor;
+import com.coredump.hc.Actors.ImageActor;
 import com.coredump.hc.Actors.Buttons.GameButton;
-import com.coredump.hc.Actors.MapActor;
+import com.coredump.hc.Actors.UnmanagedActor;
 import com.coredump.hc.Levels.Level;
-import com.coredump.hc.Levels.Level01;
 import com.coredump.hc.Screens.Alert;
 import com.coredump.hc.Screens.ContentPane;
 import com.coredump.hc.Screens.ContentViewer;
@@ -185,7 +180,6 @@ public class HCGame extends Game {
                 if (messageView == null){
                     messageView = new MessageView(batch,this);
                 }
-                messageView.update();
                 Gdx.input.setInputProcessor(messageView.stage);
                 messageView.stage.draw();
                 messageView.stage.act();
@@ -194,7 +188,9 @@ public class HCGame extends Game {
                 if (messageList == null){
                     messageList = new MessageList(batch,this);
                 }
-
+                if (messageView != null){
+                    messageView = null;
+                }
                 Gdx.input.setInputProcessor(messageList.stage);
                 messageList.stage.draw();
                 messageList.stage.act();
@@ -211,13 +207,13 @@ public class HCGame extends Game {
                             HCGame game = ((GameButton) event.getTarget()).getGame();
                             game.addDebug("Forum Button Pressed");
                             Array<Actor> actors = new Array<Actor>();
-                            actors.add(new BadActor("Page01.png"));
+                            actors.add(new UnmanagedActor("Page01.png"));
                             ContentPane content2 = new ContentPane(batch,game,actors);
                             ((GameButton) event.getTarget()).getGame().setContent(content2);
                         }
                     });
 
-                    actors.add(new BadActor("Index.png"));
+                    actors.add(new UnmanagedActor("Index.png"));
                     actors.add(hackButton);
                     content = new ContentPane(batch,this,actors);
                 }
@@ -299,24 +295,25 @@ public class HCGame extends Game {
 
     @Override
     public void pause(){
-
+        //TODO save state
     }
 
     @Override
     public void resume(){
         System.out.println("resume");
+        asset = new Asset(this);
+        asset.load();
         this.setGameState(GameState.LOADING);
-        //mainMenu = new MainMenu(batch,this);
     }
 
     public void loadMessages(){
         this.messages = new Array<HCMessage>();
-        this.messages.add(new HCMessage("Test0","This is message 0"));
-        this.messages.add(new HCMessage("Test1","This is message 1"));
-        this.messages.add(new HCMessage("Test2","This is message 2"));
-        this.messages.add(new HCMessage("Test3","This is message 3"));
-        this.messages.add(new HCMessage("Test4","This is message 4"));
-        this.messages.add(new HCMessage("Test5","This is message 5"));
+        this.messages.add(new HCMessage("Test0","This is message 0","EXIT_UP"));
+        this.messages.add(new HCMessage("Test1","This is message 1","Skull_UP"));
+        this.messages.add(new HCMessage("Test2","This is message 2","EXIT_UP"));
+        this.messages.add(new HCMessage("Test3","This is message 3","Skull_UP"));
+        this.messages.add(new HCMessage("Test4","This is message 4","EXIT_UP"));
+        this.messages.add(new HCMessage("Test5","This is message 5","Skull_UP"));
 
     };
 
@@ -354,6 +351,7 @@ public class HCGame extends Game {
         ContentPane c = this.content; // calls clear() on all actors, custom actors must override clear to dispose of Texture objects!
         this.content = content;
         c.dispose();
+        viewer = null;
     }
 
     public HCMessage getCurrentMessage() {
