@@ -37,7 +37,7 @@ import java.util.Locale;
 
 public class HCGame extends Game {
 
-    public enum GameState{LOADING,MAIN,TEXT,PHONE,BBS,PLAY,FAIL,SUCCESS}
+    public enum GameState{LOADING,MAIN,TEXT,PHONE,BBS,FORUM,NEWS,DOWNLOADS,PLAY,FAIL,SUCCESS}
     public static final int V_HEIGHT = 480;
     public static final int V_WIDTH = 320;
     public static final int DEBUG_LINES = 27;
@@ -200,7 +200,52 @@ public class HCGame extends Game {
                     Array<Actor> actors = new Array<Actor>();
                     //actors.add(new MapActor());
 
+                    GameButton hackButton = new GameButton(uiSkin.getDrawable("Forum_UP"),uiSkin.getDrawable("Forum_DN"),this);
+                    hackButton.setX(100);
+                    hackButton.addListener(new ClickListener() {
+                        @Override
+                        public void clicked(InputEvent event, float x, float y) {
+                            HCGame game = ((GameButton) event.getTarget()).getGame();
+                            game.addDebug("BBS Button Pressed");
+                            game.setContent(null);
+                            game.setGameState(GameState.FORUM);
+                            /*
+                            Array<Actor> actors = new Array<Actor>();
+                            actors.add(new UnmanagedActor("Page01.png"));
+                            ContentPane content2 = new ContentPane(batch,game,actors);
+                            ((GameButton) event.getTarget()).getGame().setContent(content2);
+                            */
+                        }
+                    });
+
+                    actors.add(new UnmanagedActor("Index.png"));
+                    actors.add(hackButton);
+                    content = new ContentPane(batch,this,actors);
+                }
+                if (viewer == null){
+                    viewer = new ContentViewer(batch,this);
+                    gestureDetector = new GestureDetector(content.camControl);
+                    inputMultiplexer = new InputMultiplexer(Gdx.input.getInputProcessor());
+
+                    inputMultiplexer.addProcessor(content.stage);
+                    inputMultiplexer.addProcessor(gestureDetector);
+                    inputMultiplexer.addProcessor(viewer.stage);
+
+                }
+
+                Gdx.input.setInputProcessor(inputMultiplexer);
+                content.update();
+
+                viewer.stage.act();
+                viewer.stage.draw();
+                break;
+            case FORUM:
+                if (content == null){
+                    Array<Actor> actors = new Array<Actor>();
+                    //actors.add(new MapActor());
+
                     GameButton hackButton = new GameButton(uiSkin.getDrawable("Hack_UP"),uiSkin.getDrawable("Hack_DN"),this);
+                    hackButton.setX(200);
                     hackButton.addListener(new ClickListener() {
                         @Override
                         public void clicked(InputEvent event, float x, float y) {
@@ -233,6 +278,10 @@ public class HCGame extends Game {
 
                 viewer.stage.act();
                 viewer.stage.draw();
+                break;
+            case NEWS:
+                break;
+            case DOWNLOADS:
                 break;
             case PLAY:
                 if (playField == null){
