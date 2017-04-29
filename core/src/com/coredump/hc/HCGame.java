@@ -200,26 +200,49 @@ public class HCGame extends Game {
                     Array<Actor> actors = new Array<Actor>();
                     //actors.add(new MapActor());
 
-                    GameButton hackButton = new GameButton(uiSkin.getDrawable("Forum_UP"),uiSkin.getDrawable("Forum_DN"),this);
-                    hackButton.setX(100);
-                    hackButton.addListener(new ClickListener() {
+                    GameButton forumButton = new GameButton(uiSkin.getDrawable("Forum_UP"),uiSkin.getDrawable("Forum_DN"),this);
+                    forumButton.setX(25);
+                    forumButton.setY(339);
+                    forumButton.addListener(new ClickListener() {
                         @Override
                         public void clicked(InputEvent event, float x, float y) {
                             HCGame game = ((GameButton) event.getTarget()).getGame();
-                            game.addDebug("BBS Button Pressed");
+                            game.addDebug("Forum Button Pressed");
                             game.setContent(null);
                             game.setGameState(GameState.FORUM);
-                            /*
-                            Array<Actor> actors = new Array<Actor>();
-                            actors.add(new UnmanagedActor("Page01.png"));
-                            ContentPane content2 = new ContentPane(batch,game,actors);
-                            ((GameButton) event.getTarget()).getGame().setContent(content2);
-                            */
+                        }
+                    });
+
+                    GameButton newsButton = new GameButton(uiSkin.getDrawable("News_UP"),uiSkin.getDrawable("News_DN"),this);
+                    newsButton.setX(123);
+                    newsButton.setY(339);
+                    newsButton.addListener(new ClickListener() {
+                        @Override
+                        public void clicked(InputEvent event, float x, float y) {
+                            HCGame game = ((GameButton) event.getTarget()).getGame();
+                            game.addDebug("News Button Pressed");
+                            game.setContent(null);
+                            game.setGameState(GameState.NEWS);
+                        }
+                    });
+
+                    GameButton filesButton = new GameButton(uiSkin.getDrawable("Files_UP"),uiSkin.getDrawable("Files_DN"),this);
+                    filesButton.setX(220);
+                    filesButton.setY(339);
+                    filesButton.addListener(new ClickListener() {
+                        @Override
+                        public void clicked(InputEvent event, float x, float y) {
+                            HCGame game = ((GameButton) event.getTarget()).getGame();
+                            game.addDebug("Files Button Pressed");
+                            game.setContent(null);
+                            game.setGameState(GameState.DOWNLOADS);
                         }
                     });
 
                     actors.add(new UnmanagedActor("Index.png"));
-                    actors.add(hackButton);
+                    actors.add(forumButton);
+                    actors.add(newsButton);
+                    actors.add(filesButton);
                     content = new ContentPane(batch,this,actors);
                 }
                 if (viewer == null){
